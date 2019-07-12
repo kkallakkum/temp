@@ -37,22 +37,25 @@ class MaskManipulater:
             mode: one of ["grid", "ellipse"], str
             
         """
+        # TODO: implement mode select
         
         fname_list = os.listdir(self.annotation_dir)
         pbar = tqdm(total=len(fname_list))
         
+        # TODO: Implement when use multiprocessing
         if use_multiprocessing:
             logger.info("Start converting using multiprocess")
             return
         else:
             logger.info("Start converting without multiprocessing")
             for f in fname_list:
+                # check whether image file name is correct
                 if len(os.path.splitext(f)[-1]) == 0:
                     logger.warning("{} is not a file".format(f))
                     pbar.update()
                     continue
                 result = self._convert_using_grid(f, grid_size, threshold, self.rgb_dict)
-                # TODO: make background transparent
+                
                 plt.imsave(os.path.join(self.save_dir, f), result)
                 pbar.update()
         pbar.close()
